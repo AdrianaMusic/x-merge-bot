@@ -1,0 +1,8 @@
+version: '2'
+services:
+  x-merge-bot:
+    image: echoulen/x-merge-bot:latest
+    environment:
+      - TOKEN=<GTIHUB_TOKEN>
+      - REPO=repo1 repo2 repo3
+      - OWNER=xteamstudio
