@@ -71,7 +71,7 @@ func startReview() {
 		reviewRepo(client, repo)
 	}
 	log.Print("Finish review repos")
-	time.AfterFunc(60*time.Second, startReview)
+	time.AfterFunc(180*time.Second, startReview)
 }
 
 func blockForever() {
