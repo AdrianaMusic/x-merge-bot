@@ -11,8 +11,17 @@ import (
 	"time"
 )
 
+func getMergeOpt(request *github.PullRequest) *github.PullRequestOptions {
+	commitMergeOpt := github.PullRequestOptions{MergeMethod: "merge"}
+	squashMergeOpt := github.PullRequestOptions{MergeMethod: "squash"}
+	if request.Base.GetRef() == "develop" {
+		return &squashMergeOpt
+	} else {
+		return &commitMergeOpt
+	}
+}
+
 func reviewRepo(client *github.Client, repo string) {
-	mergeOpt := github.PullRequestOptions{MergeMethod: "squash"}
 	owner := os.Getenv("OWNER")
 
 	prs, _, err := client.PullRequests.List(context.Background(), owner, repo, nil)
@@ -30,7 +39,8 @@ func reviewRepo(client *github.Client, repo string) {
 		}
 
 		if pullRequest.GetMergeable() && pullRequest.GetMergeableState() == "clean" {
-			p, res, err := client.PullRequests.Merge(context.Background(), owner, repo, pullRequest.GetNumber(), pullRequest.GetTitle(), &mergeOpt)
+			opt := getMergeOpt(pullRequest)
+			p, res, err := client.PullRequests.Merge(context.Background(), owner, repo, pullRequest.GetNumber(), pullRequest.GetTitle(), opt)
 			if err != nil {
 				log.Print(res)
 				return
