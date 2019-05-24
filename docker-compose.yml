@@ -6,3 +6,4 @@ services:
       - TOKEN=<GTIHUB_TOKEN>
       - REPO=repo1 repo2 repo3
       - OWNER=xteamstudio
+      - DEFAULT_BRANCH=develop

@@ -12,9 +12,10 @@ import (
 )
 
 func getMergeOpt(request *github.PullRequest) *github.PullRequestOptions {
+	defaultBranch := os.Getenv("DEFAULT_BRANCH")
 	commitMergeOpt := github.PullRequestOptions{MergeMethod: "merge"}
 	squashMergeOpt := github.PullRequestOptions{MergeMethod: "squash"}
-	if request.Base.GetRef() == "develop" {
+	if request.Base.GetRef() == defaultBranch {
 		return &squashMergeOpt
 	} else {
 		return &commitMergeOpt
